@@ -21,10 +21,15 @@ class integerbin(StreamingCommand):
                 continue
             try:
                 dest_field = "binary_output"
+
+                # format() doesn't like it if the field is formatted as str()
+                # already, hence that's the reason for the int() function
+
                 binary_result = format(int(event[self.field]), "b")
                 event[dest_field] = binary_result
             except Exception as e:
                 raise e
+
             yield event
 
 dispatch(integerbin, sys.argv, sys.stdin, sys.stdout, __name__)
